@@ -34,6 +34,7 @@ nfa_table = pd.DataFrame(nfa)
 nfa_new_states = {}
 nfa_new_states_states = []
 nfa_new_states_table = {}
+closure_nfa_states = {}
 print(f"\n\nnfa table:\n{nfa_table.transpose()}")
 print(f"\nnfa_states: {nfa_states}")
 print(f"nfa_end_state(s): {nfa_end_state}")
@@ -78,7 +79,9 @@ def trim(lst):
         del lst[to_be_removed[i]]
         if to_be_removed[i] in dfa_end_state:
             dfa_end_state.remove(to_be_removed[i])
-
+    for i in closure_nfa_states.keys():
+        if i in lst.keys() and empty_flag:
+            del lst[i]
 
 if '$' in nfa_inputs:
     empty_flag = True
@@ -124,7 +127,7 @@ if not empty_flag:
     print("\n\ndfa table: \n", nfa_new_states_table)
     print(f"\n\ndfa end state(s): {list(dict.fromkeys(dfa_end_state))}")
 else:
-    closure_nfa_states = {}
+    
     # getting closure of 1st state
     for i in nfa_states:
         if len(nfa[i]['$']) > 0:
