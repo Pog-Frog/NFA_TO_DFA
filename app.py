@@ -5,9 +5,10 @@ states_no = int(input("Enter the number of states: "))
 print("##Note: The empty input 'ε' is represented by '$' and is counted in the number of inputs\n")
 input_no = int(input("Enter the number of possible inputs: "))
 """
-nfa = {'1': {'a': ['1'], 'b': ['2']}, '2': { 'a': ['2','3'], 'b': ['3']}, '3': {'a': ['1'], 'b': []}}
+nfa = {'1': {'$': ['3'], 'a': [], 'b': ['2']}, '2': {'$': [], 'a': [
+    '2', '3'], 'b': ['3']}, '3': {'$': [], 'a': ['1'], 'b': []}}
 dfa = {}
-nfa_inputs = ['a', 'b']
+nfa_inputs = ['a', 'b', '$']
 empty_flag = False
 
 """
@@ -35,7 +36,7 @@ nfa_new_states = {}
 nfa_new_states_states = []
 nfa_new_states_table = {}
 print(f"\n\nnfa table:\n{nfa_table.transpose()}")
-print(f"nfa_states: {nfa_states}")
+print(f"\nnfa_states: {nfa_states}")
 print(f"nfa_end_state(s): {nfa_end_state}")
 
 
@@ -51,6 +52,33 @@ def add_nfa_new_states(lst):
         if tuple(tmp) not in nfa_new_states_states:
             nfa_new_states_states.append(tuple(tmp))
             add_nfa_new_states(tmp)
+
+
+def trim(lst):
+    remove_flag = 1
+    to_be_removed = []
+    for i in lst.keys():
+        if remove_flag == 0:
+            remove_flag = 1
+        if i == nfa_states[0] and (i not in closure_nfa_states.keys()):
+            continue
+        for x in lst.keys():
+            if i == x or x in to_be_removed:
+                continue
+            for y in nfa_inputs:
+                if y == '$' or x == '$':
+                    continue
+                tmp = ''.join(lst[x][y])
+                if tmp == i:
+                    remove_flag = 0
+            if remove_flag == 0:
+                break
+        if remove_flag == 1:
+            to_be_removed.append(i)
+    for i in range(len(to_be_removed)):
+        del lst[to_be_removed[i]]
+        if to_be_removed[i] in dfa_end_state:
+            dfa_end_state.remove(to_be_removed[i])
 
 
 if '$' in nfa_inputs:
@@ -72,7 +100,7 @@ if not empty_flag:
                     if tmp not in nfa_new_states_states and len(tmp) > 1:
                         nfa_new_states_states.append(tuple(tmp))
                         add_nfa_new_states(tmp)
-    
+
     for i in nfa_states:
         if i in nfa_end_state:
             dfa_end_state.append(''.join(sorted(i)))
@@ -92,12 +120,13 @@ if not empty_flag:
                 nfa_new_states_table[i][j] = ''.join(nfa_new_states_table[i][j])    
         """
     nfa.update(nfa_new_states_table)
+    trim(nfa)
     nfa_new_states_table = pd.DataFrame(nfa).transpose()
     print("\n\ndfa table: \n", nfa_new_states_table)
     print(f"\n\ndfa end state(s): {list(dict.fromkeys(dfa_end_state))}")
 else:
     closure_nfa_states = {}
-    ## getting closure of 1st state
+    # getting closure of 1st state
     for i in nfa_states:
         if len(nfa[i]['$']) > 0:
             closure_nfa_states[i] = []
@@ -135,16 +164,12 @@ else:
         """
     for i in nfa_new_states_table.keys():
         del nfa_new_states_table[i]['$']
-    ##nfa.update(nfa_new_states_table)
+    # nfa.update(nfa_new_states_table)
+    trim(nfa_new_states_table)
     nfa_new_states_table = pd.DataFrame(nfa_new_states_table).transpose()
     print("\n\ndfa table: \n", nfa_new_states_table)
     print(f"\n\ndfa end state(s): {list(dict.fromkeys(dfa_end_state))}")
 
-"""
-for i in range(states_no):
-    for j in range(input_no):
-        for k in range(len(nfa[i][j])):
-"""
 
 """
 {
