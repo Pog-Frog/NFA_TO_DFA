@@ -5,8 +5,7 @@ states_no = int(input("Enter the number of states: "))
 print("##Note: The empty input 'ε' is represented by '$' and is counted in the number of inputs\n")
 input_no = int(input("Enter the number of possible inputs: "))
 """
-nfa = {'1': {'$': ['3'], 'a': [], 'b': ['2']}, '2': {'$': [], 'a': [
-    '2', '3'], 'b': ['3']}, '3': {'$': [], 'a': ['1'], 'b': []}}
+nfa = {'1': {'$': ['3'], 'a': [], 'b': ['2']}, '2': {'$': [], 'a': ['2', '3'], 'b': ['3']}, '3': {'$': [], 'a': ['1'], 'b': []}}
 dfa = {}
 nfa_inputs = ['a', 'b', '$']
 empty_flag = False
