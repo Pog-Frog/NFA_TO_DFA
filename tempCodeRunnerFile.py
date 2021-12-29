@@ -1,2 +1,2 @@
-            if empty_flag and i == '$':
-                continue
+
+    trim(nfa_new_states_table)
