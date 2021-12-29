@@ -166,10 +166,3 @@ else:
     nfa_new_states_table = pd.DataFrame(nfa_new_states_table).transpose()
     print("\n\ndfa table: \n", nfa_new_states_table)
     print(f"\n\ndfa end state(s): {list(dict.fromkeys(dfa_end_state))}")
-
-"""
-{
- ('2', '3'): {'a': ['2', '3', '1'], 'b': ['3']},
-  ('2', '3', '1'): {'a': ['2', '3', '1'], 'b': ['3', '2']}
-}
-"""
