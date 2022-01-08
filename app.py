@@ -1,20 +1,18 @@
 import pandas as pd
 
-"""
 states_no = int(input("Enter the number of states: "))
 print("##Note: The empty input 'ε' is represented by '$' and is counted in the number of inputs\n")
 input_no = int(input("Enter the number of possible inputs: "))
-"""
-nfa = {'1': {'a': ['1'], 'b': ['2']}, '2': {'a': ['2', '3'], 'b': ['3']}, '3': {'a': ['1'], 'b': []}}
+
+nfa = {}
 dfa = {}
-nfa_inputs = ['a', 'b']
+nfa_inputs = []
 empty_flag = False
 
-"""
 for i in range(input_no):
     tmp = input("\nEnter an input: ")
     if tmp == '$':
-        empty_flag = True 
+        empty_flag = True
     nfa_inputs.append(tmp)
 
 print("\n")
@@ -25,9 +23,8 @@ for i in range(states_no):
     for j in range(input_no):
         print(f"Enter the next state(s) when the current state {state} has the input '{nfa_inputs[j]}': ")
         nfa[state][nfa_inputs[j]] = list(x for x in input().strip().split())
-nfa_end_state = list(input("Enter the end state(s): ")).strip().split()
-"""
-nfa_end_state = ['1']
+nfa_end_state = list(input("Enter the end state(s): "))
+
 dfa_end_state = []
 nfa_states = list(nfa.keys())
 nfa_table = pd.DataFrame(nfa)
